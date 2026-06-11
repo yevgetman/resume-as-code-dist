@@ -82,25 +82,113 @@ resume init ~/my-resume
 cd ~/my-resume
 ```
 
-From here on, just converse with your agent from inside that folder. A few things
-to try:
-
-| You say | What happens |
-|---|---|
-| "Import my current resume" (give it a PDF/DOCX path, or your LinkedIn data export) | The agent extracts the content and files it into structured entries. |
-| "Add my role at Acme as Staff Engineer from March 2025." | A new work entry is created and committed. |
-| "Fix the dates on my last job." | The agent edits the entry; the change is committed. |
-| "Show me my resume as a PDF." | Renders a PDF (downloads a rendering engine the first time — see below). |
-| "Open a live preview." | Starts a local preview server in your browser. |
-| "Track this job posting and tailor my resume to it." | Saves the posting, scores your fit, and creates a tailored variant. |
-| "Undo that last change." | Rolls back via git history. |
-
-Everything is a git commit, so nothing is ever silently lost — you (or the agent)
-can review or revert any change.
+From here on, just converse with your agent from inside that folder. Everything
+the agent does is a git commit, so nothing is ever silently lost — you can review
+or roll back any change ("undo that last change").
 
 ---
 
-## 4. Good to know
+## 4. Bring in your existing resume
+
+You don't start from a blank page. Point the agent at whatever you already have
+and ask it to import:
+
+> *"Import my resume — it's at ~/Downloads/resume.pdf."*
+> *"Here's my LinkedIn data export, import it."*
+
+What works as a source:
+
+- **A PDF or Word doc** of your current resume — the agent reads the text and files
+  it into structured entries (work, education, skills, …), then you review.
+- **Your LinkedIn data export** — the ZIP you get from LinkedIn's *Settings → Get a
+  copy of your data*. This imports deterministically (no guessing).
+- **A JSON Resume file** (if you happen to have one) — imported directly.
+
+After importing, ask the agent to "show me what you imported" or open a preview
+(see [section 6](#6-preview-it-in-your-browser)) and fix anything that didn't land
+right ("my title at Acme should be Staff Engineer", "drop the second bullet on the
+Globex role").
+
+---
+
+## 5. What you can do once you're set up
+
+Just talk to your agent from inside your resume folder. Some of the most useful
+things to ask:
+
+### Edit and add
+
+> *"Add my new role: Staff Engineer at Acme, started March 2025."*
+> *"Tighten my summary and move the open-source project above the side gig."*
+
+Each change is committed automatically, with full history.
+
+### Keep different versions of your resume (branches)
+
+Your resume can have variants, and the tool keeps them cleanly separated as git
+branches. There are two kinds, and the agent handles the mechanics:
+
+- **`main`** — your canonical resume. The source of truth. When you make a general
+  improvement here, the agent can merge it *down* into every variant.
+- **Role variants (`role/…`)** — a reusable resume positioned for a *category* of
+  role, not one specific job. Ask: *"Make a version of my resume positioned for
+  engineering-leadership roles."* The agent creates a `role/engineering-leadership`
+  branch (mainly a different title + summary, same work history) that you reuse
+  across many applications.
+- **Tailored variants (`tailor/…`)** — a resume tailored to **one specific job
+  posting**, tied to that job in the tracker (next section).
+
+You can ask to see or export any version: *"Export my role/engineering-leadership
+resume as a PDF."*
+
+### Track and tailor for jobs
+
+The tool has a built-in job tracker (a board you view in the browser — see the next
+section). Things to ask:
+
+> *"Track this job posting"* (paste the listing or give a link) — the agent adds it
+> to your board.
+> *"Tailor my resume to this posting and export a PDF."* — the agent branches a
+> `tailor/<job>` variant from the closest fit, makes the tailoring edits there, links
+> it to the job, and renders it.
+> *"How well do I match this job?"* — runs a match analysis and scores your fit; the
+> board flags a tailored variant that scores below your base resume.
+> *"Move the Acme job to 'interviewing' and add a note about the recruiter call."*
+
+### Export
+
+> *"Show me my resume as a PDF."* (or HTML, or DOCX)
+> *"Use the compact theme."*
+
+The first PDF render downloads a rendering engine (see [Good to
+know](#7-good-to-know)).
+
+---
+
+## 6. Preview it in your browser
+
+There's a live preview server that shows your resume (in any theme or branch) and
+your **job board**, and reloads as changes are made.
+
+Easiest — just ask:
+
+> *"Open a live preview."*  /  *"Open my job board."*
+
+Or run it yourself from inside your resume folder:
+
+```bash
+resume preview
+```
+
+It opens `http://127.0.0.1:4444` in your browser. The home page lists your themes
+and resume variants; add `/jobs` to the URL (`http://127.0.0.1:4444/jobs`) for the
+job tracker board — where you can see every tracked job, its status, your match
+score, and which resume variant is linked, and edit jobs right there. Stop the
+server with `Ctrl+C`. (Useful flags: `--port <n>`, `--no-open`, `--theme <name>`.)
+
+---
+
+## 7. Good to know
 
 - **Your data is yours.** It's a normal git folder. Back it up, push it to your
   own private GitHub, copy it between machines — it's just files.

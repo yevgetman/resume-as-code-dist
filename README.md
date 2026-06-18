@@ -22,7 +22,7 @@ stays consistent.
 
 ## 1. Install
 
-macOS or Linux. One command:
+**macOS** (Intel or Apple Silicon) or **Linux** (x64 or arm64). One command:
 
 ```bash
 curl -fsSL https://github.com/yevgetman/resume-as-code-dist/releases/latest/download/install.sh | sh
@@ -39,8 +39,15 @@ resume --version
 On macOS the installer also clears the Gatekeeper quarantine flag, so the binary
 just runs.
 
-> This is a time-limited build (see [Heads-up](#heads-up) below). When it stops
-> working, ask whoever shared it for a fresh copy and re-run the line above.
+**Platform notes:**
+
+- **Windows** — there's no native Windows build yet. Install
+  [WSL2](https://learn.microsoft.com/windows/wsl/install) (a Linux environment for
+  Windows), then run the same command from your WSL shell — it installs the Linux
+  build.
+- **Linux** — the binaries target glibc. Lightweight musl-based distros (Alpine,
+  and some minimal Docker images) aren't supported; on those the binary won't
+  start. Use a glibc distro such as Debian, Ubuntu, Fedora, or Arch.
 
 ---
 
@@ -201,13 +208,42 @@ server with `Ctrl+C`. (Useful flags: `--port <n>`, `--no-open`, `--theme <name>`
 
 ---
 
-## Heads-up
+## Free and Pro
 
-This is a **time-limited build**. It works for a set period from your first run,
-and every build has a hard stop date — whichever comes first. When it expires,
-running any command prints `E_RESUME_BUILD_EXPIRED` and stops. That's expected:
-just ask whoever shared it with you for a fresh build and re-run the install
-command from step 1.
+`resume-as-code` is **free to download and use** — nothing expires and there's no
+trial clock. Free covers one resume and a small job search. **Pro** lifts the
+limits for an active search.
+
+| | Free | Pro |
+|---|---|---|
+| Resume editing (all sections), import, history, preview, agent skill | Full | Full |
+| PDF + HTML export | Yes, with a discreet footer watermark | Yes, no watermark |
+| DOCX export; PDF page-size control | — | Yes |
+| Section / audience filtering on export | — | Yes |
+| Jobs tracked | Up to 5 | Unlimited |
+| Tailored resume variants | 1 | Unlimited |
+| Match / keyword analysis | 3 total, score only | Unlimited, full breakdown |
+
+When you reach a Free limit the tool tells you exactly which one and how to lift
+it — it never crashes or hides your data.
+
+### Get Pro
+
+Pricing is **$12/month, $79/year, or $99 once** (lifetime), handled through Polar.
+Buy and manage your plan at:
+
+> **https://resume-as-code.ai/pro**
+
+After purchase you receive a license key. Activate it:
+
+```bash
+resume license activate <your-license-key>
+resume license status            # should show: pro
+```
+
+Activation is verified **offline** — once activated, Pro keeps working with no
+network connection. `resume license deactivate` reverts a machine to Free, and a
+reinstall keeps your license.
 
 ## Uninstall
 

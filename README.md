@@ -81,17 +81,30 @@ The agent runs that once, reads the embedded guide, and is ready to go.
 
 ## 3. Start your resume
 
-Your resume lives in a folder you own (a git repository). Either ask your agent to
-create it, or do it yourself:
+Your resume lives in a folder you own (a git repository). There are **two ways to
+begin** — pick whichever fits:
+
+**Option 1 — make a folder, then start your agent in it.** Create an empty folder
+and open your agent there; it will set up the repo and lead you through setup:
 
 ```bash
-resume init ~/my-resume
-cd ~/my-resume
+mkdir ~/my-resume && cd ~/my-resume
+# now open your agent (e.g. Claude Code) in this folder
 ```
 
-From here on, just converse with your agent from inside that folder. Everything
-the agent does is a git commit, so nothing is ever silently lost — you can review
-or roll back any change ("undo that last change").
+**Option 2 — just ask your agent.** Start your agent anywhere and say: *"Use
+resume-as-code to start my resume."* It will ask where the resume should live and
+initialize it for you.
+
+Either way, your agent **leads a short first-time setup** — it checks your
+environment, initializes the repo if needed, and **asks if you have an existing
+resume to import** (a PDF, Word doc, LinkedIn export, or JSON Resume — see
+[section 4](#4-bring-in-your-existing-resume)). You don't need to know any
+commands; just answer its questions. Everything it does is a git commit, so
+nothing is ever silently lost.
+
+Under the hood the agent runs `resume bootstrap` to check readiness and `resume
+init` to scaffold the repo — but you can simply let it drive.
 
 ---
 

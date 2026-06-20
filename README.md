@@ -254,8 +254,13 @@ resume license activate <your-license-key>
 resume license status            # should show: pro
 ```
 
-Activation is verified **offline** — once activated, Pro keeps working with no
-network connection. `resume license deactivate` reverts a machine to Free, and a
+Your first activation contacts the license service **once** to exchange your
+license key for a signed Pro token — so you'll need to be online for
+`resume license activate`. After that, the token is cached locally and **Pro keeps
+working with no network connection** (it's re-verified offline against a public key
+built into the binary). If activation reports `could not reach the license service`,
+you're offline or the service is briefly unavailable — check your connection and
+re-run the command. `resume license deactivate` reverts a machine to Free, and a
 reinstall keeps your license.
 
 ## Uninstall
